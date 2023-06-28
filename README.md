@@ -6,7 +6,6 @@ Api that supports user creation, loan request and loan repayments.
   
 ### Start the application
 Run below command on the terminal
-./gradlew bootrun -x test     
-```
+./gradlew bootrun -x test  
 
 
