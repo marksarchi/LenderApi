@@ -1,5 +1,6 @@
 package com.sarchi.lenderapi.service;
 
+import com.sarchi.lenderapi.config.Constants;
 import com.sarchi.lenderapi.domain.Loan;
 import com.sarchi.lenderapi.domain.LoanRepaymentStatus;
 import com.sarchi.lenderapi.domain.LoanRequest;
@@ -9,13 +10,20 @@ import com.sarchi.lenderapi.repository.LoanRepository;
 import com.sarchi.lenderapi.repository.UserRepository;
 import com.sarchi.lenderapi.domain.RepayRequest;
 import lombok.AllArgsConstructor;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
+@EnableScheduling
+@Slf4j
 public class LoanService {
 
     UserRepository userRepository;
@@ -85,5 +93,23 @@ public class LoanService {
         notifyUserBySms(userExists.get().getMsisdn(), loanPaymentSuccessMessage);
         return ResponseEntity.ok(updatedLoan);
     }
+    @Scheduled(cron = "0 0 0 * * ?") // Runs at midnight every day
+    public void updateUnpaidLoans() {
+        LocalDateTime defaultPeriod = LocalDateTime.now().minusMonths(Constants.LOAN_DEFAULT_PERIOD);
+        List<Loan> unpaidLoans = loanRepository.findAllByCreatedDateBeforeAndRepaymentStatusIn(defaultPeriod,
+                List.of(LoanRepaymentStatus.UN_PAID,LoanRepaymentStatus.PARTIALLY_PAID));
+
+        for (Loan loan : unpaidLoans) {
+            // Update the loan status or perform any other actions
+            loan.setRepaymentStatus(LoanRepaymentStatus.DEFAULTED);
+            loan.setUpdatedDate(LocalDateTime.now());
+        }
+
+        // Save the updated loans
+        loanRepository.saveAll(unpaidLoans);
+    }
+
+
+
 }
 
