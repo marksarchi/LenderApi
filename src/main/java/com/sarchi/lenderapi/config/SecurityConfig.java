@@ -21,7 +21,6 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/**").authenticated()
                 .and()
                 .authorizeRequests()
                 .anyRequest().hasRole(Constants.DEFAULT_ROLE)
