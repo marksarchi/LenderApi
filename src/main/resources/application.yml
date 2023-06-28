@@ -1,6 +1,6 @@
 spring:
   datasource:
-    username: sa
+    username: user
     url: jdbc:h2:mem:dcbapp
     driverClassName: org.h2.Driver
     password: password
@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
-        format_sql: 'true'
+        format_sql: 'false'
 
     hibernate:
       ddl-auto: update
@@ -16,7 +16,7 @@ spring:
 
 twilio:
   account_sid: ACfd8a86c7521720896fad19d39bc6f522
-  token: 985155845414683c3183a3b1f646fece
+  token: 7a48f8a823e4dbbd0960a9e25e10820a
   trial_number: +14849897916
 
 server:
