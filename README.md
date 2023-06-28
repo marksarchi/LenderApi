@@ -1,13 +1,12 @@
 # LenderApi
-# Retail Experience monorepo
-Api that supports user creatio, loan request and loan repayments.
+Api that supports user creation, loan request and loan repayments.
 
 ## Requirements
 * Java >= 17
   
 ### Start the application
-```sh
-./gradlew :<PATH>:bootRun
+Run below command on the terminal
+./gradlew bootrun -x test     
 ```
 
 
