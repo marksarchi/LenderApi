@@ -1,0 +1,32 @@
+version: "3.7"
+networks:
+  mynet:
+    driver: bridge
+services:
+  app:
+    container_name: lender-api
+
+    image: sarchi/lender_api:latest
+    #    build:
+    #      context: .
+    #      dockerfile: Dockerfile
+    ports:
+      - 8056:8056
+    networks:
+      - mynet
+    depends_on:
+      - postgres_db
+  postgres_db:
+    container_name: postgres-db-lender
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data1
+    networks:
+      - mynet
