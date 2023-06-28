@@ -6,6 +6,6 @@
 ## Getting started
 ### Start the application
 ```sh
-./gradlew :<PATH>:bootRun
+./gradlew bootRun
 ```
 
